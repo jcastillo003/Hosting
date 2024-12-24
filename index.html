@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Créditos</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            animation: fadeIn 1s forwards 0.5s;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #003160;
+            margin-bottom: 10px;
+            text-align: center;
+            opacity: 0;
+            animation: slideIn 0.8s forwards 0.5s;
+        }
+        
+        .calculator {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 500px;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 1s forwards 0.5s;
+        }
+
+        table {
+            width: 500px;
+            border-spacing: 15 15px;
+            opacity: 0;
+            animation: fadeIn 1.2s forwards 0.5s;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px 15px;
+            font-size: 14px;
+        }
+
+        th {
+            background:#003160;
+            color:#fff;
+            font-weight: normal;
+            width: 40%;
+        }
+
+        td {
+            background-color: #f8f8f8;
+
+        }        
+        
+        select, input [type = "range"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            background-color: #f8f8f8;
+            font-size: 14px;
+            transition: transform 0.2s ease; 
+        }      
+
+        select:focus, input[type = "range"]:focus {
+            transform: scale(1.05s);
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+        .range-label {
+            font-weight: bolder;
+            color: #003160;
+        }
+        
+        .hide { display:none; }
+        #rangeLegends { color:#f00; font-size: 12px;}
+        .rangeNumber {  color:#000}
+        
+        /*button reset calcular*/
+        .button {
+            display: inline-block;
+            padding:10px 20px;
+            margin-top: 15px;
+            background-color: #003160;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-size: 14px;
+        }        
+
+        .button:hover {
+            background-color: #00529c;
+        }
+
+        .button.reset {
+            background: #e4e4e4;
+            border:1px solid #003160;
+            color:#003160;
+        }
+
+        .button.reset:hover {
+            background-color: #b3b3b3;
+        }
+
+        .rangeValue, .rangeCuotas {
+            font-size: 14px;
+            font-weight: bold;
+            color: #003160;
+            margin-top: 5px;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .legend {
+            font-size: 12px;
+            color: #f00;
+            margin-top: 5px;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+      
+    </style>
+
+</head>
+<body>
+    <div class = "calculator">
+        <h1>CALCULADORA DE CRÉDITOS</h1>
+        <form autocomplete="off">
+            <table>
+                <tr>
+                    <th>PRODUCTO</th>
+                <td>
+                    <select name="producto_creditos" id="producto_creditos">
+                        <option value="0">CREDI YA</option>
+                        <option value="1">JUNTOS YA</option>
+                        <option value="2">MI NEGOCIO YA</option>
+                        <option value="3">PRESTAMO FIDUCIARIO</option>
+                        <option value="4">PRESTAMO LIBRE DISPONIBILIDAD</option>
+                        <option value="5">CREDITO HIPOTECARIO</option>
+                    </select>
+                </td>
+        </tr>
+        <tr>
+            <th>DESTINO</th>
+                <td>
+                    <select name="destino_creditos" id="destino_creditos">
+                        <option value="0">CREDI YA SIN FIADOR</option>
+                        <option value="1">CREDI YA 1 FIADOR</option>
+                        <option value="2">CREDI YA 2 FIADORES</option>
+                    </select>
+                </td>
+        </tr>
+        <tr>
+            <th>OPCIÓN</th>
+                <td>
+                    <select name="opcion_destino_creditos" id="opcion_destino_creditos">
+                        <option value="0">CONSUMO - NEGOCIO - VEHICULO</option>
+                        <option value="1">CONSOLIDACION</option>
+                    </select>
+                </td>
+        </tr>
+        <tr>
+            <th>RANGO</th>
+                <td>Desde <strong id="rangoMin">Q.5,000.00</strong> hasta <strong id="rangoMax">Q.200,000.00</strong></td>
+        </tr>
+        <tr>
+            <th>MONTO</th><td>
+                <input name="monto" id="monto" type="range" min="5000" max="200000" step="5000" oninput="rangeValue.innerHTML='Q.'+formatMoney(this.value);calcularCuotaNivelada()">
+                <label id="rangeValue" class="rangeNumber">Q.5,000.00</label>
+                <br>
+                <span id="rangeLegends" class="hide"></span>
+            </td>
+        </tr>
+        <tr>
+            <th>CUOTAS</th>
+            <td>
+                <input name="cuotas_creditos" id="cuotas_creditos" type="range" min="12" max="120" value="12" step="1" oninput="rangeCuotas.innerHTML=this.value; calcularCuotaNivelada()">
+                <label id="rangeCuotas" class="rangeNumber">12</label>
+            </td>
+        </tr>
+        <tr>
+            <th>TASA</th><td id="tasa">15.75%</td>
+        </tr>
+        <tr>
+            <th>CUOTA NIVELADA</th><td id="cuotaNivelada">Q.453.06</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="button" onclick="resetearCalculadora()" class="button reset">Limpiar</button>
+            </td>
+        </tr>
+        </tbody></table>
+
+    </form>
+    </div>
+    
+
+<script>
+
+    const productoCreditos = document.getElementById('producto_creditos');
+    const destinoCreditos = document.getElementById('destino_creditos');
+    const opcion_destino_creditos = document.getElementById('opcion_destino_creditos');
+    const cellTasa = document.getElementById('tasa');
+    const rangeValue = document.getElementById('rangeValue');
+    const monto = document.getElementById('monto');
+    const rangeLegends = document.getElementById('rangeLegends');
+    const rangeCuotas = document.getElementById('rangeCuotas');
+    const cuotasCreditos = document.getElementById('cuotas_creditos');
+    const rangoMin = document.getElementById('rangoMin');
+    const rangoMax = document.getElementById('rangoMax');
+    const cuotaNivelada = document.getElementById('cuotaNivelada');
+
+let min=0;
+let max=0;
+let legend=false;
+let tasa=0;
+
+let cuotas=12;
+
+let calculadora= [
+    {
+        title:      'CREDI YA',
+        destiny:    [{
+                        title:'CREDI YA SIN FIADOR',
+                        options: [
+                                    {
+                                        title:'CONSUMO - NEGOCIO - VEHICULO',
+                                        min:5000,
+                                        max:200000,
+                                        tasa:15.75 
+                                    },
+                                    {   
+                                        title:'CONSOLIDACION',
+                                        min:5000,
+                                        max:200000,
+                                        tasa:19.50 
+                                    },
+                                 ]
+                    },
+                    {
+                        title:'CREDI YA 1 FIADOR',
+                        options: [
+                                    {
+                                        title:'CONSUMO - NEGOCIO - VEHICULO',
+                                        min:200000,
+                                        max:300000,
+                                        tasa:15.75
+                                    },
+                                    {
+                                        title:'CONSOLIDACION',
+                                        min:200000,
+                                        max:300000,
+                                        tasa:18.50
+                                    },
+                                 ]                    
+                    },
+                    {
+                        title:'CREDI YA 2 FIADORES',
+                        options: [
+                                    {
+                                        title:'CONSUMO - NEGOCIO - VEHICULO',
+                                        min:300000,
+                                        max:400000,
+                                        tasa:15.75
+                                    },
+                                    {
+                                        title:'CONSOLIDACION',
+                                        min:300000,
+                                        max:400000,
+                                        tasa:18.50
+                                    },
+                                 ]                        
+                    }]
+    },
+    {
+        title:      'JUNTOS YA',
+        destiny:    [{
+                        title:'JUNTOS YA SIN FIADOR',
+                        options: [
+                                    {
+                                        title:'CONSUMO - NEGOCIO - VEHICULO',
+                                        min:5000,
+                                        max:100000,
+                                        tasa:16.50
+                                    },
+                                    {
+                                        title:'CONSOLIDACION',
+                                        min:5000,
+                                        max:100000,
+                                        tasa:19.50
+                                    },
+                                 ]                        
+                    },
+                    {
+                        title:'JUNTOS YA 1 FIADOR',
+                        options: [
+                                    {
+                                        title:'CONSUMO - NEGOCIO - VEHICULO',
+                                        min:100000,
+                                        max:150000,
+                                        tasa:16.50
+                                    },
+                                    {
+                                        title:'CONSOLIDACION',
+                                        min:100000,
+                                        max:150000,
+                                        tasa:19.50
+                                    },
+                                 ]                        
+                    },
+                    {
+                        title:'JUNTOS YA 2 FIADORES',
+                        options: [
+                                    {
+                                        title:'CONSUMO - NEGOCIO - VEHICULO',
+                                        min:150000,
+                                        max:200000,
+                                        tasa:16.50
+                                    },
+                                    {
+                                        title:'CONSOLIDACION',
+                                        min:150000,
+                                        max:200000,
+                                        tasa:19.50
+                                    },
+                                 ]                        
+                    }]            
+    },
+    {
+        title:      'MI NEGOCIO YA',
+        destiny:    [{
+                        title:'MI NEGOCIO YA',
+                        options: [
+                                    {
+                                        title:'NEGOCIO',
+                                        min:5000,
+                                        max:50000,
+                                        tasa:25.50
+                                    },
+                                    {
+                                        title:'CONSOLIDACION',
+                                        min:5000,
+                                        max:50000,
+                                        tasa:25.50
+                                    },
+                                 ]
+                    }]
+    },
+    {
+        title:      'PRESTAMO FIDUCIARIO',
+        destiny:    [{
+                        title:'PRESTAMO FIDUCIARIO 1 FIADOR',
+                        options: [
+                                    {
+                                        title:'CONSTRUCCION - VIVIENDA - NEGOCIO',
+                                        min:5000,
+                                        max:150000,
+                                        tasa:14.50
+                                    },
+                                    {
+                                        title:'CONSUMO',
+                                        min:5000,
+                                        max:150000,
+                                        tasa:15.75
+                                    },
+                                    {
+                                        title:'VEHICULO',
+                                        min:5000,
+                                        max:150000,
+                                        tasa:16.50
+                                    },
+                                    {
+                                        title:'CONSOLIDACION',
+                                        min:5000,
+                                        max:150000,
+                                        tasa:19.50
+                                    },
+                                 ]                        
+                    },
+                    {
+                        title:'PRESTAMO FIDUCIARIO 2 FIADORES',
+                        options: [
+                                    {
+                                        title:'CONSTRUCCION - VIVIENDA - NEGOCIO',
+                                        min:150000,
+                                        max:200000,
+                                        tasa:14.50
+                                    },
+                                    {
+                                        title:'CONSUMO',
+                                        min:150000,
+                                        max:200000,
+                                        tasa:15.75
+                                    },
+                                    {
+                                        title:'VEHICULO',
+                                        min:150000,
+                                        max:200000,
+                                        tasa:16.50
+                                    },
+                                    {
+                                        title:'CONSOLIDACION',
+                                        min:150000,
+                                        max:200000,
+                                        tasa:19.50
+                                    },
+                                 ]                        
+                    }]          
+    },
+    {
+        title:      'PRESTAMO LIBRE DISPONIBILIDAD',
+        destiny:    [{
+                        title:'PRESTAMO LIBRE DISPONIBILIDAD',
+                        options: [
+                                    {
+                                        title:'CONSUMO HASTA Q.50,000',
+                                        min:5000,
+                                        max:50000,
+                                        tasa:14.50
+                                    },
+                                    {
+                                        title:'CONSUMO HASTA Q.100,000',
+                                        min:50000,
+                                        max:100000,
+                                        tasa:15.75
+                                    },
+                                    {
+                                        title:'CONSUMO HASTA Q.200,000',
+                                        min:100000,
+                                        max:200000,
+                                        tasa:16.50
+                                    },
+                                 ]
+                    }]           
+    },
+    {
+        title:      'CREDITO HIPOTECARIO',
+        destiny:    [{
+                        title:'CREDITO HIPOTECARIO',
+                        options: [
+                                    {
+                                        title:'VIVIENDA',
+                                        min:5000,
+                                        max:500000,
+                                        legend:'80% DEL VALOR DEL AVALÚO',
+                                        tasa: 8.99
+                                    },
+                                    {
+                                        title:'CONSOLIDACION',
+                                        min:5000,
+                                        max:500000,
+                                        legend:'80% DEL VALOR DEL AVALÚO',
+                                        tasa: 15.50
+                                    },
+                                    {
+                                        title:'NEGOCIO',
+                                        min:5000,
+                                        max:500000,
+                                        legend:'80% DEL VALOR DEL AVALÚO',
+                                        tasa: 13.25
+                                    },
+                                    {
+                                        title:'CONSTRUCCION',
+                                        min:5000,
+                                        max:500000,
+                                        legend:'80% DEL VALOR DEL AVALÚO',
+                                        tasa: 13.25
+                                    },                                                                                                  
+                                 ]                        
+                    }]        
+    },
+]
+
+initCalculadora();
+
+function initCalculadora()
+{
+    clearSelect(productoCreditos)
+
+    calculadora.forEach((obj,index) => {
+        addOptionToSelect(productoCreditos,obj.title,index)
+    });
+    changeDestino();
+
+    productoCreditos.addEventListener('change', () => { changeDestino() });
+    destinoCreditos.addEventListener('change', () => { changeOpcionDestino() });  
+    opcion_destino_creditos.addEventListener('change', () => { selectOpcionDestino() });
+    calcularCuotaNivelada()    
+}
+
+function calcularCuotaNivelada()
+{
+    cuotas=cuotasCreditos.value;
+
+    let valor=getValorDeCuotaFija(monto.value,tasa, cuotas)
+    
+    cuotaNivelada.innerHTML='Q.'+formatMoney( getValorDeCuotaFija(monto.value,tasa, cuotas) );
+                
+}
+
+function getValorDeCuotaFija(monto, tasa, cuotas) {
+    const mitasa = (tasa / 12)/100
+    valor = monto *( (mitasa * Math.pow(1 + mitasa, cuotas)) / (Math.pow(1 + mitasa, cuotas) - 1) );
+    return valor.toFixed(2);
+}
+
+function changeDestino()
+{
+    clearSelect(destinoCreditos)
+
+    calculadora[productoCreditos.value].destiny.forEach((obj,index) => {
+        addOptionToSelect(destinoCreditos,obj.title,index)
+    });
+    changeOpcionDestino();    
+
+}
+function changeOpcionDestino()
+{
+    clearSelect(opcion_destino_creditos)
+
+    calculadora[productoCreditos.value].destiny[destinoCreditos.value].options.forEach((obj,index) => {
+        addOptionToSelect(opcion_destino_creditos,obj.title,index);
+    });
+    selectOpcionDestino()    
+}
+function selectOpcionDestino()
+{
+    min=0;
+    max=0;
+    legend=false;
+    tasa=0;
+
+    const option=calculadora[productoCreditos.value].destiny[destinoCreditos.value].options[opcion_destino_creditos.value];
+
+    min=option.min;
+    max=option.max;
+    tasa=option.tasa;
+
+    legend=(keyExistsInObject(option, 'legend'))?option.legend:false;
+
+    cellTasa.innerHTML=tasa+'%';
+    monto.min=min;
+    monto.max=max;
+    monto.value=min;    
+    rangeValue.innerHTML="Q."+formatMoney(min);
+    rangoMin.innerHTML="Q."+formatMoney(min);
+    rangoMax.innerHTML="Q."+formatMoney(max);
+    
+    cuotas=cuotasCreditos.value;
+
+    if(legend!==false)
+    {
+        rangeLegends.classList.remove('hide')
+        rangeLegends.innerHTML=legend;
+    } else {
+        rangeLegends.classList.add('hide')
+        rangeLegends.innerHTML='';
+    }
+    calcularCuotaNivelada()
+}
+
+function resetearCalculadora()
+{
+    cuotasCreditos.value=12;
+    rangeCuotas.innerHTML=12;
+    cuotas=12;
+    initCalculadora();
+}
+
+function addOptionToSelect(selectElement,text,value)
+{
+    const option = document.createElement('option');
+    option.value = value;
+    option.text = text;
+    selectElement.appendChild(option)
+}
+
+function clearSelect(selectElement) {
+    if (selectElement) {
+        while (selectElement.firstChild) { selectElement.removeChild(selectElement.firstChild); }
+    }
+}
+
+function keyExistsInObject(obj, key) {
+  return Object.prototype.hasOwnProperty.call(obj, key);
+}
+
+function formatMoney(amount, decimalCount = 2, decimalSeparator = '.', thousandsSeparator = ',') {
+  try {
+    decimalCount = Math.abs(decimalCount);
+    decimalSeparator = decimalSeparator || '.';
+    thousandsSeparator = thousandsSeparator || ',';
+
+    let number = parseFloat(amount);
+
+    if (isNaN(number)) {
+      throw new Error('Invalid amount');
+    }
+
+    let result = number.toFixed(Math.max(0, decimalCount));
+
+    result = result.replace('.', decimalSeparator);
+
+    return result.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + thousandsSeparator);
+  } catch (e) {
+    console.error(e);
+    return 'Invalid amount';
+  }
+}
+
+</script>
+
+
+</body></html>
