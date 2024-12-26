@@ -38,15 +38,18 @@
         }
 
         table {
-            width: 550px;
-            border-spacing: 15 15h;
+            /*width: 550px;*/
+            width: 100px;
+            /*border-spacing: 15 15h;*/
+            border-spacing: 10px;
             opacity: 2;
             animation: fadeIn 1.2s forwards 0.5s;
         }
 
         th, td {
             text-align: left;
-            padding: 12px 15px;
+            /*padding: 12px 15px;*/
+            padding: 10px;
             font-size: 14px;
         }
 
@@ -54,7 +57,7 @@
             background:#003160;
             color:#fff;
             font-weight: normal;
-            width: 10%;
+            /*width: 10%;*/
         }
 
         td {
@@ -63,7 +66,8 @@
         }        
         
         select, input [type = "range"] {
-            width: 65%;
+            /*width: 65%;*/
+            width: 100%;
             padding: 10px;
             margin-top: 5px;
             border-radius: 4px;
@@ -77,6 +81,7 @@
             transform: scale(1.05s);
             box-shadow: 10 10 10px rgba(0, 0, 0, 0.2);
         }
+
         .range-label {
             font-weight: bolder;
             color: #003160;
@@ -121,9 +126,11 @@
             margin-top: 5px;
         }
 
+        /*
         .hide {
             display: none;
         }
+        */
 
         .legend {
             font-size: 12px;
@@ -164,6 +171,27 @@
                 }
             }
         
+        @media (max-width: 768px)
+        {
+            .calculator {
+                width: 90%;
+                padding: 15px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+
+            .button {
+                width: 100%;
+                padding: 15px;
+            }
+        }
+
         /*Reducir tamaño de tabla*/
         .table-creditos {
             width: 80%;
