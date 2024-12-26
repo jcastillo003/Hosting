@@ -573,7 +573,9 @@ function selectOpcionDestino()
 
     legend=(keyExistsInObject(option, 'legend'))?option.legend:false;
 
-    cellTasa.innerHTML=tasa+'%';
+    // Quitar visualmente el valor de "Tasa"
+   // cellTasa.innerHTML=tasa+'%';
+   
     monto.min=min;
     monto.max=max;
     monto.value=min;    
