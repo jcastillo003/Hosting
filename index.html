@@ -175,51 +175,7 @@
                 opacity: 1;
             }
         }
-
-        /* Diseño responsive*/
-
-        @media (max-width: 600px)
-        {
-            body {
-                flex-wrap: nowrap;
-            }
-            h1 {
-                font-size: 18px;
-            }
-
-            .calculator {
-                width: 85%;
-                padding: 20px;
-                max-width: 100%;
-            }
-
-            table {
-                font-size: 12px;
-            }
-
-            th, td {
-                padding: 8px;
-            }
-
-            .button {
-                width: 100%;
-                padding: 15px;
-            }
-        }
-
-        /*
-        Reducir tamaño de tabla
-        .table-creditos {
-            width: 80%;
-            font-size: 12px;
-        }
-
-        .table-creditos td, .table-creditos th {
-            padding: 5px;
-            font-size: 12px;
-        }
-        */
-    
+      
     </style>
 
 </head>
@@ -279,9 +235,9 @@
                 <label id="rangeCuotas" class="rangeNumber">12</label>
             </td>
         </tr>
-        <tr>
-            <th>TASA</th><td id="tasa">15.75%</td>
-        </tr>
+      <!-- <tr>
+            <th>TASA</th><td id="tasa">15.75%</td> 
+        </tr> -->
         <tr>
             <th>CUOTA NIVELADA</th><td id="cuotaNivelada">Q.453.06</td>
         </tr>
@@ -640,7 +596,9 @@ function selectOpcionDestino()
 
     legend=(keyExistsInObject(option, 'legend'))?option.legend:false;
 
-    cellTasa.innerHTML=tasa+'%';
+    // Quitar visualmente el valor de "Tasa"
+   // cellTasa.innerHTML=tasa+'%';
+
     monto.min=min;
     monto.max=max;
     monto.value=min;    
