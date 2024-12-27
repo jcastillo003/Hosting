@@ -21,9 +21,9 @@
         }
 
         h1 {
-            font-size: 15px;
+            font-size: 20px;
             color: #003160;
-            margin-bottom: 1px;
+            margin-bottom: 5px;
             text-align: center;
             opacity: 0;
             animation: slideIn 0.8s forwards 0.5s;
@@ -34,27 +34,27 @@
             /*Bordes*/
             border-radius: 20px; /*Bordes del fondo blanco*/
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-            width: 400h;
-            height: 400h;
+            width: 500px;
+            /*height: 400px;*/
             padding: 15px;
-            opacity: 0;
+            opacity: 10;
             animation: fadeIn 1s forwards 0.5s;
         }
 
         table {
-            width: 400px;
+            width: 500px;
             /*width: 100px;*/
-            height: 400h;
-            /*border-spacing: 15 15h;*/
-            border-spacing: 20px;
+            height: 500px;
+            border-spacing: 15 15px;
+            /*border-spacing: 20px;*/
             opacity: 2;
             animation: fadeIn 1.2s forwards 0.5s;
         }
 
         th, td {
-            text-align: left;
+            text-align: center;
             /*padding: 12px 15px;*/
-            padding: 12px 30px;
+            padding: 15px 10px;
             font-size: 14px;
         }
 
@@ -63,22 +63,26 @@
             background: #063363;
             color:#fff;
             font-weight: normal;
-            width: 10%;
-            height: 15%;
+            /*width: 30%;*/
+            /*height: 10%;*/
+            /*margin: 5px;*/
+            border-radius: 5px;
         }
 
         td {
-            background-color: #f8f8f8;
+            /*background-color: #f8f8f8; SOMBRA GRIS EN EL COMBOBOX*/
+            margin: 0 0 5px;
 
         }        
         
+        /*COMBOBOX*/
         select, input [type = "range"] {
-            /*width: 65%;*/
-            width: 100%;
-            padding: 20px;
-            margin-top: 5px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            width:90%;
+            /*idth: 100%;*/
+            padding: 10px;
+            /*margin-top: 5px;*/
+            border-radius: 10px;
+            /*border: 1px solid #ccc;*/
             background-color: #f8f8f8;
             font-size: 14px;
             transition: transform 0.2s ease; 
@@ -100,14 +104,17 @@
         
         /*button reset calcular*/
         .button {
-            display: inline-block;
+            text-align: center;
+            align-items: center;
+            /*display: inline-block;*/
+            display: inline-table;
             padding:10px 20px;
-            margin-top: 15px;
+            /*margin-top: 15px;*/
             /*background-color: #003160;*/
             background-color: #063363;
-            color: white;
-            border: none;
-            border-radius: 4px;
+            /*color: white;*/
+            /*border: none;*/
+            border-radius: 10px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.2s ease;
             font-size: 14px;
@@ -119,7 +126,7 @@
 
         .button.reset {
             background: #e4e4e4;
-            border:1px solid #003160;
+            /*border:1px solid #003160;*/
             color:#003160;
         }
 
